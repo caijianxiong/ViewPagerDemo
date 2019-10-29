@@ -23,7 +23,7 @@ public abstract class BasePagerAdapter<T, H extends BasePagerAdapter.BaseHolder>
     public Object instantiateItem(ViewGroup container, int position) {
         H holder;
         T data;
-        holder = createHolder();
+        holder = createHolder(mContext, position);
         data = dataList.get(position);
         container.addView(holder.itemView);
         onBindView(holder, data, position);
@@ -49,13 +49,15 @@ public abstract class BasePagerAdapter<T, H extends BasePagerAdapter.BaseHolder>
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         View removeView = (View) object;
         container.removeView(removeView);
-        onReleasePagerHolder((H) removeView.getTag(),position);
+        onReleasePagerHolder((H) removeView.getTag(), position);
     }
 
 
     @NonNull
-    protected abstract H createHolder();
+    protected abstract H createHolder(Context context, int position);
+
     protected abstract void onBindView(H holder, T data, int position);
+
     /**
      * 用于释放页面destroyItem调用且移除时调用
      */
@@ -64,6 +66,7 @@ public abstract class BasePagerAdapter<T, H extends BasePagerAdapter.BaseHolder>
 
     public static class BaseHolder {
         public final View itemView;
+
         public BaseHolder(View itemView) {
             itemView.setTag(this);
             this.itemView = itemView;

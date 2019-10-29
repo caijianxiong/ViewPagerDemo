@@ -31,7 +31,6 @@ public class DoubleAddPageTransformer implements ViewPager.PageTransformer {
 
     private int pagerWidth;
     private float horizontalOffsetBase;
-
     private void animWay1(View page, float position) {
         if (pagerWidth == 0)
             pagerWidth = page.getWidth();//vp width
@@ -40,5 +39,9 @@ public class DoubleAddPageTransformer implements ViewPager.PageTransformer {
         //setTranslation
 //        page.setTranslationX((-page.getWidth() * position) + horizontalOffsetBase * position);
         page.setTranslationX((horizontalOffsetBase - pagerWidth) * position);
+        //setScale
+        float scaleFactor = Math.min(SCALE - Math.abs(position) * 0.1f, SCALE);
+        page.setScaleX(scaleFactor);
+        page.setScaleY(scaleFactor);
     }
 }
